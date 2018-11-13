@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  orpheos-portal:
+    build: ./orpheos-portal
+    ports: 
+      - 3001:3002

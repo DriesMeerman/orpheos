@@ -1,0 +1,32 @@
+const bcrypt =   require('bcryptjs');
+
+const SALTCOUNT = 12;
+const HASH = bcrypt.genSaltSync(SALTCOUNT);
+
+
+class User {
+
+	constructor(userObj = {}) {
+        this.id = userObj.id || null;
+        this.displayName = userObj.displayName || null;
+		this.username = userObj.username || null;
+		this.password = userObj.password || null;
+		this.email = userObj.email || null;
+		this.created = userObj.created || Date.now();
+		this.updated = userObj.updated || Date.now();
+	}
+
+	checkPassword(passwordToCheck) {
+        console.log("checking password", passwordToCheck, this.password);
+        let result =  bcrypt.compareSync(passwordToCheck, this.password);
+        console.log('password was correct: ', result);
+        return result;
+    }
+
+    hashPassword(password){
+        password = this.password ? this.password : password;
+        return bcrypt.hashSync(password, SALTCOUNT);
+    }
+}
+
+module.exports = User;
