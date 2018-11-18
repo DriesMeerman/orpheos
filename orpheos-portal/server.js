@@ -1,5 +1,6 @@
 var express = require('express');
 var passport = require('passport');
+const path = require('path');
 const bcrypt = require("bcryptjs");
 var Strategy = require('passport-local').Strategy;
 var db = require('./db');
@@ -7,6 +8,8 @@ var db = require('./db');
 const User = require('./model/User');
 const PassportStrategyHelper = require('./services/passportStrategyHelper')
 const home = require('./routes/home');
+
+const PORT = 3000;
 
 // Configure the local strategy for use by Passport.
 //
@@ -57,11 +60,16 @@ app.use(require('express-session')({ secret: 'keyboard cat', resave: false, save
 app.use(passport.initialize());
 app.use(passport.session());
 
+//add dependencies
+app.use(express.static(path.join(__dirname, 'public')));
+
+// app.use('/node_modules', express.static(path.resolve()+'/node_modules')); //bad
+addDependency('bootstrap', 'dist');
+addDependency('jquery', 'dist');
+addDependency('tether', 'dist');
+
 // // Define routes.
-// app.get('/',
-//   function (req, res) {
-//     res.render('home', { user: req.user });
-//   });
+
 app.use('/', home);
 
 
@@ -72,4 +80,9 @@ app.get('/profile',
     res.render('profile', { user: req.user });
   });
 
-app.listen(3000);
+app.listen(PORT);
+
+function addDependency(name, dist){
+  dist = dist ? name + "/" + dist : name;
+  app.use('/dep/' + name , express.static(path.resolve() + '/node_modules/' + dist));
+}

@@ -1,5 +1,18 @@
-<% if (!user) { %>
-	<p>Welcome! Please <a href="/login">log in</a>.</p>
-<% } else { %>
-	<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
-<% } %>
+<html>
+	<head>
+		<title>Orhpeos Project</title>
+		<% include ../templates/headTemplate.ejs %>
+	</head>
+
+	<body>
+		<div>
+			<a href="/dep">deps</a>
+			<% if (!user) { %>
+				<p>Welcome! Please <a href="/login">log in</a>.</p>
+			<% } else { %>
+				<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
+				<a href="/logout">Log out</a>
+			<% } %>
+		</div>
+	</body>
+</html>

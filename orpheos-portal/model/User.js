@@ -6,11 +6,14 @@ const HASH = bcrypt.genSaltSync(SALTCOUNT);
 
 class User {
 
-	constructor(userObj = {}) {
+	constructor(userObj = {}, hashPassword = false) {
         this.id = userObj.id || null;
         this.displayName = userObj.displayName || null;
-		this.username = userObj.username || null;
-		this.password = userObj.password || null;
+        this.username = userObj.username || null;
+        
+        let password = hashPassword ? this.hashPassword(userObj.password) : userObj.password;
+
+		this.password = password || null;
 		this.email = userObj.email || null;
 		this.created = userObj.created || Date.now();
 		this.updated = userObj.updated || Date.now();
