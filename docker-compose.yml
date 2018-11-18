@@ -4,4 +4,5 @@ services:
   orpheos-portal:
     build: ./orpheos-portal
     ports: 
-      - 3001:3002
+      - 4141:3000
+      # localhost:imagelocalhost
