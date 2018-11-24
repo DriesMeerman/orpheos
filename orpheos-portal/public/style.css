@@ -1,0 +1,35 @@
+body {
+    transition: opacity .8s ease;
+    background-color: #505050;
+    
+}
+
+.invisible {
+    opacity: 0;
+}
+
+.visible {
+    opacity: 1;
+}
+
+/* body.coding {
+    background-image: url('../assets/coding_background.jpg');
+    background-size: cover;
+}
+
+body.city {
+    background-image: url('../assets/city_background.jpg');
+    background-size: cover;
+} */
+
+.container.login{
+    margin-top: 10rem;
+}
+
+.admin {
+    margin-top: 2rem;
+}
+
+.p-top-1{
+    padding-top: 1rem
+}

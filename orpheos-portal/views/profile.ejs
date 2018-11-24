@@ -1,20 +1,35 @@
 <html>
-	<head>
-		<title>Orhpeos Login</title>
-		<% include ../templates/headTemplate.ejs %>
-	</head>
 
-	<body>
-		<div>
-            <p>
-                ID: <%= user.id %><br/>
-                Username: <%= user.username %><br/>
-                Name: <%= user.displayName %><br/>
-                <% if (user.emails) { %>
-                Email: <%= user.emails[0].value %><br/>
-                <% } %>
-            </p>
-            <a href="/logout">Log out</a>
-		</div>
-	</body>
+<head>
+    <title>Orhpeos Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <% include ../templates/headTemplate.ejs %>
+</head>
+
+<body>
+    <% include ../templates/navbar.ejs %>
+    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/coding_background.jpg"}) %>
+    <div class="container admin">
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <div class="card" style="max-height: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">User Profile</h5>
+                        <div>
+                            <p>
+                                ID:
+                                <%= user.id %><br />
+                                Username:
+                                <%= user.username %><br />
+                                Name:
+                                <%= user.displayName %><br />
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

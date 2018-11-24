@@ -7,7 +7,7 @@ var db = require('./db');
 
 const User = require('./model/User');
 const PassportStrategyHelper = require('./services/passportStrategyHelper')
-const home = require('./routes/home');
+
 
 const PORT = 3000;
 
@@ -61,28 +61,31 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //add dependencies
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/public', express.static(path.join(__dirname, '/public')));
+app.use('/assets' , express.static(path.resolve() + '/assets/'));
+
+// express.static(path.resolve() + '/assets/')
 
 // app.use('/node_modules', express.static(path.resolve()+'/node_modules')); //bad
 addDependency('bootstrap', 'dist');
 addDependency('jquery', 'dist');
 addDependency('tether', 'dist');
 
+
 // // Define routes.
 
-app.use('/', home);
+app.use('/', require('./routes/home'));
+app.use('/profile', require('./routes/profile'));
+app.use('/admin', require('./routes/admin'));
 
 
 
-app.get('/profile',
-  require('connect-ensure-login').ensureLoggedIn(),
-  function (req, res) {
-    res.render('profile', { user: req.user });
-  });
+
 
 app.listen(PORT);
 
 function addDependency(name, dist){
   dist = dist ? name + "/" + dist : name;
+  console.log('adding dep', path.resolve() + '/node_modules/' + dist);
   app.use('/dep/' + name , express.static(path.resolve() + '/node_modules/' + dist));
 }

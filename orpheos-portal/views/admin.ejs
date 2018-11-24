@@ -1,0 +1,28 @@
+<html>
+
+<head>
+    <title>Orhpeos Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <% include ../templates/headTemplate.ejs %>
+</head>
+
+<body>
+    <% include ../templates/navbar.ejs %>
+    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/city_background.jpg"}) %>
+    <div class="container admin">
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <div class="card" style="max-height: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Administration</h5>
+                        <div>
+                            <a href="/admin/users">User administration</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

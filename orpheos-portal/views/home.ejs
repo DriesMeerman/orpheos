@@ -1,18 +1,36 @@
 <html>
-	<head>
-		<title>Orhpeos Project</title>
-		<% include ../templates/headTemplate.ejs %>
-	</head>
 
-	<body>
-		<div>
-			<a href="/dep">deps</a>
-			<% if (!user) { %>
-				<p>Welcome! Please <a href="/login">log in</a>.</p>
-			<% } else { %>
-				<p>Hello, <%= user.username %>. View your <a href="/profile">profile</a>.</p>
-				<a href="/logout">Log out</a>
-			<% } %>
-		</div>
-	</body>
+<head>
+    <title>Orhpeos Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <% include ../templates/headTemplate.ejs %>
+</head>
+
+
+
+<body>
+    <% include ../templates/navbar.ejs %>
+    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/coding_background.jpg"}) %>
+    <div class="container login">
+        <div class="row justify-content-md-center">
+            <div class="col-6">
+                <div class="card" style="max-height: 18rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">Home</h5>
+                        <div>
+                            <div>
+                                <p>Hello,
+                                    <%= user.username %>. View your <a href="/profile">profile</a>.</p>
+                            </div>
+                            <div>
+                                <a href="/admin">Administration</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
 </html>

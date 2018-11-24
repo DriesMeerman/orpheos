@@ -4,6 +4,7 @@ var records = [
   { id: 1, username: 'jack', password: 'secret', displayName: 'Jack' },
   { id: 2, username: 'jill', password: 'birthday', displayName: 'Jill' },
   { id: 3, username: 'dries', password: 'yeet', displayName: 'Dries'},
+  { id: 4, username: 'admin', password: 'admin', displayName: 'Admin'}
 ].map(userData => {
   let user = new User(userData, true);
   // userData.password = user.hashPassword();
