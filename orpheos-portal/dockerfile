@@ -1,11 +1,7 @@
-FROM node:latest
+FROM node:11-alpine
+# FROM node:latest
 WORKDIR /usr/src/app
-# COPY . /usr/src/app
 COPY package.json /usr/src/app/
-RUN npm install
 COPY . ./
-# RUN cd /usr/src/app
-# WORKDIR /usr/src/app
-CMD ["cd", "/usr/src/app/"]
-# CMD ["npm", "install"]
-CMD ["node", "server.js"]
+RUN npm install
+CMD ["sh", "./startup.sh"]

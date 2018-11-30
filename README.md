@@ -2,6 +2,17 @@
 
 ## How to use
 
+### Mysql
+To connect to the mysql image use the following command after all services have been started.
+``` shell
+docker exec -it orpheos_mysql-database_1 bash
+```
+Once connected to the image run the following command.
+```shell
+mysql -uroot -p
+```
+Once you are asked a password use the password that is set in the `./env/.env-mysql`
+
 ## License MIT
 Copyright 2018 Dries Meerman
 

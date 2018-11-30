@@ -3,6 +3,16 @@ version: '3'
 services:
   orpheos-portal:
     build: ./orpheos-portal
+    # depends_on: ["mysql-database"]
     ports: 
       - 4141:3000
-      # localhost:imagelocalhost
+      # local-port:image-port
+
+  # mysql-database:
+  #   image: mysql/mysql-server:latest
+  #   volumes:
+  #     - ./mysql-database/data:/var/lib/mysql
+  #   ports:
+  #       - 33061:3306
+  #   env_file:
+  #     - env/.env-mysql
