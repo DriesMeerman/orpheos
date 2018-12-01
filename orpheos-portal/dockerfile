@@ -1,5 +1,5 @@
-FROM node:11-alpine
-# FROM node:latest
+# FROM node:11-alpine
+FROM node:latest
 WORKDIR /usr/src/app
 COPY package.json /usr/src/app/
 COPY . ./

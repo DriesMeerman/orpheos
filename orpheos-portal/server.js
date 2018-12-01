@@ -28,14 +28,14 @@ passport.use(new Strategy(PassportStrategyHelper.verifyLocalUser));
 // serializing, and querying the user record by ID from the database when
 // deserializing.
 passport.serializeUser(function (user, cb) {
-  cb(null, user.id);
+    cb(null, user.id);
 });
 
 passport.deserializeUser(function (id, cb) {
-  db.users.findById(id, function (err, user) {
-    if (err) { return cb(err); }
-    cb(null, user);
-  });
+    db.users.findById(id, function (err, user) {
+        if (err) { return cb(err); }
+        cb(null, user);
+    });
 });
 
 
@@ -62,7 +62,7 @@ app.use(passport.session());
 
 //add dependencies
 app.use('/public', express.static(path.join(__dirname, '/public')));
-app.use('/assets' , express.static(path.resolve() + '/assets/'));
+app.use('/assets', express.static(path.resolve() + '/assets/'));
 
 // express.static(path.resolve() + '/assets/')
 
@@ -78,14 +78,117 @@ app.use('/', require('./routes/home'));
 app.use('/profile', require('./routes/profile'));
 app.use('/admin', require('./routes/admin'));
 
+process.on('unhandledRejection', console.log.bind(console))
 
 
+setTimeout(letsGo, 5 * 1000);
+
+function letsGo(){
+    console.log('letsago');
+    setupDatabase();
+    //dbTestThing();
+    app.listen(PORT);
+}
+
+function dbTestThing(){
+    db.users.findById('1', (err,res) => {
+        console.log('RAW USER DATA FROM DB', res);
+        let user = new User(res);
+        console.log('user', user);
+    });
+    db.users.findByUsername('admin', (err,res) => {
+        console.log('RAW USER DATA FROM DB BY NAME', res);
+        let user = new User(res);
+        console.log('user', user);
+    });
+    let dries = new User({ id: 3, username: 'dries', password: 'yeet', displayName: 'Dries' }, true);
+    db.users.insertUser(dries, (result)=>{
+        console.log('inserted user', result);
+    });
+}
+
+// setupDatabase();
+// app.listen(PORT);
+
+function addDependency(name, dist) {
+    dist = dist ? name + "/" + dist : name;
+    console.log('adding dep', path.resolve() + '/node_modules/' + dist);
+    app.use('/dep/' + name, express.static(path.resolve() + '/node_modules/' + dist));
+}
+
+/**
+ * temp db setup
+ */
+function setupDatabase() {
+    const db = require('./db/connection')
+
+    db_exist_query(db).then((res) => {
+        console.log('db already exists skipping..');
+    }).catch((err)=>{
+        //console.log('Error: ', err);
+        console.log('Running db setup')
+        var promises = continueSetup(db);
+        Promise.all(promises).then((values)=>{
+            console.log('done insertion', values);
+        })
+    })
+
+    function continueSetup(db){
+        let createDBQuery = "CREATE DATABASE `orpheos`;";
+        let createUserTableQuery = "CREATE TABLE `orpheos`.`user` ( `id` INT NOT NULL AUTO_INCREMENT ,`display_name` VARCHAR(20) NOT NULL , `user_name` VARCHAR(20) NOT NULL , `password` VARCHAR(60) NOT NULL , PRIMARY KEY (`id`), UNIQUE (`user_name`));";
+        let insertUserQuery = "INSERT INTO `user` (`id`, `display_name`, `user_name`, `password`) VALUES (NULL, 'Admin', 'admin', '$2a$12$UqaXAflkcYz7wPxqnpp6HublPKx5Lopy6WP841.pc98yKxOaBIdt6');";
+    
+        let queries = [createDBQuery, createUserTableQuery, insertUserQuery];
+        var promises = [];
+    
+        queries.forEach((query) => {
+            promises.push(new Promise(function (resolve, reject) {
+                db.pool.getConnection((err, con) => {
+                    if (err) reject(err);
+                    console.log("inserting " + query);
+
+                    con.query(query, null, (err, result) => {
+                        if (err) {
+                            reject(err);
+                        } else {
+                            resolve(result);
+                        }
+                        con.release();
+                    });
+    
+                });
+            }));
+        });
+        return promises;
+    }
 
 
-app.listen(PORT);
+    
+}
 
-function addDependency(name, dist){
-  dist = dist ? name + "/" + dist : name;
-  console.log('adding dep', path.resolve() + '/node_modules/' + dist);
-  app.use('/dep/' + name , express.static(path.resolve() + '/node_modules/' + dist));
+function db_exist_query(db){
+    let que = `SHOW DATABASES LIKE 'orpheos';`;
+    return new Promise(function (resolve, reject) {
+        db.pool.getConnection((err, con) => {
+            console.log('hi', arguments);
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (!con) {
+                reject(arguments);
+                return;
+            }
+
+            con.query(que, null, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+                con.release();
+            });
+
+        });
+    });
 }
