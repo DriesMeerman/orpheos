@@ -2,6 +2,21 @@
 
 ## How to use
 
+### WINDOWS
+In the docker-compose file remove the volumes mapping since shared volumes don't work properly on windows.
+It wont allow the database to write files. Not specifying a shared volume, will cause it to create it's own volume where it will have write rights.
+
+### Mysql
+To connect to the mysql image use the following command after all services have been started.
+``` shell
+docker exec -it orpheos_mysql-database_1 bash
+```
+Once connected to the image run the following command.
+```shell
+mysql -uroot -p
+```
+Once you are asked a password use the password that is set in the `./env/.env-mysql`
+
 ## License MIT
 Copyright 2018 Dries Meerman
 

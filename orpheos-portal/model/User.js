@@ -8,8 +8,8 @@ class User {
 
 	constructor(userObj = {}, hashPassword = false) {
         this.id = userObj.id || null;
-        this.displayName = userObj.displayName || null;
-        this.username = userObj.username || null;
+        this.displayName = userObj.displayName || userObj.display_name || null;
+        this.username = userObj.username || userObj.user_name || null;
         
         let password = hashPassword ? this.hashPassword(userObj.password) : userObj.password;
 
