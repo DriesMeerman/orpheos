@@ -122,16 +122,23 @@ function addDependency(name, dist) {
 function setupDatabase() {
     const db = require('./db/connection')
 
-    db_exist_query(db).then((res) => {
-        console.log('db already exists skipping..');
-    }).catch((err)=>{
+    var handelDbIssue = (err) => {
         //console.log('Error: ', err);
         console.log('Running db setup')
         var promises = continueSetup(db);
         Promise.all(promises).then((values)=>{
             console.log('done insertion', values);
         })
-    })
+    }
+
+    db_exist_query(db).then((res) => {
+
+        db_userTableExists_query(db).then((result)=>{
+            console.log('db already exists skipping..');
+        }).catch(handelDbIssue)
+
+        
+    }).catch(handelDbIssue)
 
     function continueSetup(db){
         let createDBQuery = "CREATE DATABASE `orpheos`;";
@@ -144,7 +151,10 @@ function setupDatabase() {
         queries.forEach((query) => {
             promises.push(new Promise(function (resolve, reject) {
                 db.pool.getConnection((err, con) => {
-                    if (err) reject(err);
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
                     console.log("inserting " + query);
 
                     con.query(query, null, (err, result) => {
@@ -164,6 +174,33 @@ function setupDatabase() {
 
 
     
+}
+
+function db_userTableExists_query(db){
+    let que = `SELECT * FROM orpheos.user WHERE id = 1;`;
+    return new Promise(function (resolve, reject) {
+        db.pool.getConnection((err, con) => {
+            console.log('hi', arguments);
+            if (err) {
+                reject(err);
+                return;
+            }
+            if (!con) {
+                reject(arguments);
+                return;
+            }
+
+            con.query(que, null, (err, result) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(result);
+                }
+                con.release();
+            });
+
+        });
+    });
 }
 
 function db_exist_query(db){

@@ -2,6 +2,10 @@
 
 ## How to use
 
+### WINDOWS
+In the docker-compose file remove the volumes mapping since shared volumes don't work properly on windows.
+It wont allow the database to write files. Not specifying a shared volume, will cause it to create it's own volume where it will have write rights.
+
 ### Mysql
 To connect to the mysql image use the following command after all services have been started.
 ``` shell
