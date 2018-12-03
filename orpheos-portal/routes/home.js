@@ -1,5 +1,6 @@
 const express = require('express');
 const passport = require('passport');
+const authMiddleWare = require('../middleware/authMiddleWare');
 // const User = require('../model/User');
 const router = express.Router();
 
@@ -21,9 +22,10 @@ router.get('/', function isAuthenticated(req, res, next) {
         res.render('index', { user: req.user });
     });
 
-router.get('/home', (req, res) => {
-    res.render('home', { user: req.user });
-});
+router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
+    (req, res) => {
+        res.render('home', { user: req.user });
+    });
 
 // router.get('/login', (req, res) => {
 //     res.render('login');

@@ -41,6 +41,28 @@ function findByUsername(username, cb) {
             } else {
                 cb(false);
             }
+        }).catch((err) => {
+            cb(false, err);
+        });
+    });
+};
+
+function loadUsers(start, end, cb) {
+    process.nextTick(function () {
+        let query = "SELECT * FROM user u ORDER BY u.id LIMIT ?, ?";
+        let values = [start, end];
+        db.executeQuery(query, values).then((result) => {
+            
+            if (result.length > 0){
+                let users = result.map(user => {
+                    let data = user;
+                    delete data.password;
+                    return new User(data);
+                });
+                cb(null,users);
+            } else {
+                cb(false);
+            }
         })
     });
 };
@@ -94,6 +116,7 @@ function insertUser(user, cb){
 module.exports = {
     // findById_my: findById_my,
     // findByUserName_my: findByUserName_my,
+    loadUsers: loadUsers,
     insertUser: insertUser,
     findById: findById,
     findByUsername: findByUsername

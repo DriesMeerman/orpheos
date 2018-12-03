@@ -12,16 +12,56 @@
     <div class="container admin">
         <div class="row justify-content-md-center">
             <div class="col-8">
-                <div class="card" style="max-height: 18rem;">
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">User Administration</h5>
                         <div>
-                            some user info
+                            <a href="/admin/users/new">new user</a>
+                            <!-- page: <%= page %> -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-md-center" style="margin-top: 3rem;">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Users</h5>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Username</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% if (users) {for (var i = 0; i < users.length; i++) { %>
+                                <tr>
+                                    <td>
+                                        <%= users[i].id %>
+                                    </td>
+                                    <td>
+                                        <%= users[i].displayName %>
+                                    </td>
+                                    <td>
+                                        <%= users[i].username %>
+                                    </td>
+                                </tr>
+                                <% }}%>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
 
