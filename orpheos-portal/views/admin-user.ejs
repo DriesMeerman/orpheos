@@ -25,7 +25,7 @@
         </div>
 
         <div class="row justify-content-md-center" style="margin-top: 3rem;">
-            <div class="col-12">
+            <div class="col-8">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Users</h5>
@@ -36,20 +36,29 @@
                                     <th scope="col">id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Username</th>
+                                    <th scope="col"></th>
                                 </tr>
                             </thead>
                             <tbody>
 
-                                <% if (users) {for (var i = 0; i < users.length; i++) { %>
-                                <tr>
+                                <% if (users) {for (var i = 0; i < users.length; i++) { var userId = users[i].id%>
+                                <tr id="user-row-<%= userId %>">
                                     <td>
-                                        <%= users[i].id %>
+                                        <%= userId %>
                                     </td>
                                     <td>
                                         <%= users[i].displayName %>
                                     </td>
                                     <td>
                                         <%= users[i].username %>
+                                    </td>
+                                    <td >
+                                        <button class="btn btn-outline-danger" onclick="deleteUser(<%= userId %>)">X</button>
+                                        <!-- <form action="/admin/users/<%= users[i].id %>" 
+                                              method="POST"
+                                              onSubmit="return confirm('Are you sure you wish to delete the user?');">
+                                            <button>X</button>
+                                        </form> -->
                                     </td>
                                 </tr>
                                 <% }}%>
@@ -64,5 +73,26 @@
 
     </div>
 </body>
+<script>
+
+    function deleteUser(id) {
+        let remove = confirm('Are you sure you wish to delete the user?');
+        if (remove) {
+            let url = `/admin/users/${id}`;
+            let rowId = `#user-row-${id}`;
+
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: function (msg) {
+                    console.log("Data Deleted: " + msg);
+                    $(rowId).remove();
+                }
+            });
+        }
+
+    }
+
+</script>
 
 </html>

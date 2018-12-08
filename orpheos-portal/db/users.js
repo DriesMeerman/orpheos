@@ -47,6 +47,24 @@ function findByUsername(username, cb) {
     });
 };
 
+function removeUserById(id, cb) {
+    process.nextTick(function () {
+        let query = "DELETE FROM user WHERE id = ?";
+        let values = [id];
+        db.executeQuery(query, values).then((result) => {
+            cb(null,result);
+            // if (result.length > 0){
+            //     let user = new User(result[0]);
+                
+            // } else {
+            //     cb(new Error('User ' + id + ' does not exist'));
+            // }
+        }).catch( err => {
+            cb (err, false);
+        })
+    });
+}
+
 function loadUsers(start, end, cb) {
     process.nextTick(function () {
         let query = "SELECT * FROM user u ORDER BY u.id LIMIT ?, ?";
@@ -88,6 +106,26 @@ function insertUser(user, cb){
     });
 }
 
+function updateUser(user, cb){
+    process.nextTick(function () {
+        let query = "UPDATE user SET ? WHERE id = ?";
+        let payload = {
+            display_name: user.displayName,
+            password: user.password
+        }
+        if (!payload.password){
+            delete payload.password;
+        }
+        if (!payload.display_name){
+            delete payload.display_name;
+        }
+        let values = [payload, user.id];
+        db.executeQuery(query, values).then((result) => {
+            cb(null, result);
+        }).catch(err => cb(err));
+    });
+}
+
 // function findById(id, cb) {
 //     process.nextTick(function () {
 //         var idx = id - 1;
@@ -118,6 +156,8 @@ module.exports = {
     // findByUserName_my: findByUserName_my,
     loadUsers: loadUsers,
     insertUser: insertUser,
+    updateUser: updateUser,
+    removeUserById: removeUserById,
     findById: findById,
     findByUsername: findByUsername
 }

@@ -6,7 +6,9 @@ var Strategy = require('passport-local').Strategy;
 var db = require('./db');
 
 const User = require('./model/User');
-const PassportStrategyHelper = require('./services/passportStrategyHelper')
+const PassportStrategyHelper = require('./services/passportStrategyHelper');
+
+const enableLogging = process.env.enableLogging || false;
 
 
 const PORT = 3000;
@@ -50,7 +52,10 @@ app.set('view engine', 'ejs');
 
 // Use application-level middleware for common functionality, including
 // logging, parsing, and session handling.
-app.use(require('morgan')('combined'));
+if (enableLogging){
+    app.use(require('morgan')('combined'));
+}
+
 app.use(require('cookie-parser')());
 app.use(require('body-parser').urlencoded({ extended: true }));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
@@ -87,7 +92,24 @@ function letsGo(){
     console.log('letsago');
     setupDatabase();
     //dbTestThing();
+
+    app.use('/routes', routesRoute);
+
     app.listen(PORT);
+}
+
+function routesRoute(req, res){
+    let routes = [];
+    app._router.stack.forEach(function(r){
+        if (r.route && r.route.path){
+            let route = r.route.path;
+            // let method = r.route.path.stack[0].method;
+            //routes.push({ route: route})
+        //   console.log(r.route.path)
+        }
+        res.json(routes)
+      });
+
 }
 
 function dbTestThing(){

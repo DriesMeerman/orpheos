@@ -17,10 +17,10 @@ router.get('/users',
         let page = req.query.page || 0;
         let count = 25;
         db.users.loadUsers(count * page, count, (err, users) => {
-            if (err){
+            if (err) {
                 res.render('admin-user', { user: req.user, page: page });
                 return;
-            } 
+            }
             res.render('admin-user', { user: req.user, page: page, users: users });
         })
         // .catch((err) => {
@@ -28,14 +28,34 @@ router.get('/users',
         // })
     });
 
+router.delete('/users/:id',
+    require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
+    (req, res) => {
+        let id = req.params.id;
+        db.users.removeUserById(id, (err, result) => {
+            if (err) {
+                res.json(err);
+            } else {
+                let result = {
+                    success: true
+                };
+                result = JSON.stringify(result);
+                res.json(result);//redirect('/admin/users');
+            }
+        })
+    });
+
 router.get('/users/new',
     require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     function (req, res) {
+        // res.redirect('/')
         res.render('admin-user-new', { user: req.user });
     });
 
 router.post('/users/new',
+    require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     (req, res) => {
+        console.log('maymyamyamyamyamyamyamyamyam')
         console.log('ye', req.body);
 
         let body = req.body;
@@ -46,8 +66,13 @@ router.post('/users/new',
         }
         let user = new User(data, true);
 
-        db.users.insertUser(user);
-        res.redirect('/admin/users/new');
+        db.users.insertUser(user, (err, response) => {
+            if (err) {
+                res.json(err);
+            } else {
+                res.redirect('/admin/users');
+            }
+        });
     });
 
 module.exports = router;
