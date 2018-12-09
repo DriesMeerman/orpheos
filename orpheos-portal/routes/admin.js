@@ -55,15 +55,13 @@ router.get('/users/new',
 router.post('/users/new',
     require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     (req, res) => {
-        console.log('maymyamyamyamyamyamyamyamyam')
-        console.log('ye', req.body);
-
         let body = req.body;
         let data = {
             username: body.username,
             display_name: body.display_name,
             password: body.password
         }
+        console.log('adding new user', data.display_name);
         let user = new User(data, true);
 
         db.users.insertUser(user, (err, response) => {

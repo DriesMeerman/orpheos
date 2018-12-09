@@ -1,4 +1,4 @@
-
+const CONSTANTS = require('../config/constants');
 
 
 function redirectNonAuthorized(redirectUrl){
@@ -11,6 +11,20 @@ function redirectNonAuthorized(redirectUrl){
     }
 }
 
+function checkRole(role) {
+    return function (req, res, next){
+        if (typeof(role) === 'string'){
+            role = CONSTANTS.roles[role];
+        }
+
+        req.access_level = req.user.role;//role;
+
+        next();
+    }
+}
+
 module.exports = {
-    redirectNonAuthorized: redirectNonAuthorized
+    redirectNonAuthorized: redirectNonAuthorized,
+    checkRole: checkRole
+
 }
