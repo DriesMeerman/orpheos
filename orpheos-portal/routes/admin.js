@@ -2,6 +2,7 @@ const express = require('express');
 const passport = require('passport');
 const User = require('../model/User');
 const router = express.Router();
+const CONSTANTS = require('../config/constants');
 const db = require('../db');
 
 
@@ -49,19 +50,22 @@ router.get('/users/new',
     require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     function (req, res) {
         // res.redirect('/')
-        res.render('admin-user-new', { user: req.user });
+        let accessLevels = Object.keys(CONSTANTS.roles).map( roleKey => { return {name: roleKey, value: CONSTANTS.roles[roleKey]}; });
+        res.render('admin-user-new', { user: req.user, accessLevels: accessLevels });
     });
 
 router.post('/users/new',
     require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     (req, res) => {
         let body = req.body;
+        console.log('Creating new user from body:', body);
         let data = {
             username: body.username,
             display_name: body.display_name,
-            password: body.password
+            password: body.password,
+            access_level: body.access
         }
-        console.log('adding new user', data.display_name);
+        console.log('Adding new user', data.display_name);
         let user = new User(data, true);
 
         db.users.insertUser(user, (err, response) => {

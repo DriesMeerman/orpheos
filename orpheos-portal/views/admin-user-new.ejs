@@ -27,8 +27,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="password">Password</label>
-                                    <input id="password" type="password" name="password" class="form-control" placeholder="password">
+                                    <input id="password" type="password" name="password" class="form-control"
+                                        placeholder="password">
                                 </div>
+                                <% if (accessLevels) { %>
+                                <div class="form-group">
+                                    <label for="access">Access Level</label>
+                                    <select id="access" name="access" class="form-control">
+                                        <% for(var i = 0; i < accessLevels.length; i++) { var level = accessLevels[i]; %>
+                                            <option value="<%= level.value %>"><%= level.name %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <% } %>
 
                                 <button type="submit" class="btn btn-outline-primary">Submit</button>
                             </form>

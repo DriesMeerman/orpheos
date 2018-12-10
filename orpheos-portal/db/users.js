@@ -91,7 +91,8 @@ function insertUser(user, cb){
         let payload = {
             display_name: user.displayName,
             user_name: user.username,
-            password: user.password
+            password: user.password,
+            access_level: user.accessLevel
         }
         let values = [payload];
         db.executeQuery(query, values).then((result) => {

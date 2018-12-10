@@ -36,6 +36,7 @@
                                     <th scope="col">id</th>
                                     <th scope="col">Name</th>
                                     <th scope="col">Username</th>
+                                    <th scope="col">Access Level</th>
                                     <th scope="col"></th>
                                 </tr>
                             </thead>
@@ -51,6 +52,9 @@
                                     </td>
                                     <td>
                                         <%= users[i].username %>
+                                    </td>
+                                    <td>
+                                        <%= users[i].accessLevel %>
                                     </td>
                                     <td>
                                         <button class="btn btn-outline-danger remove-user" onclick="deleteUser(<%= userId %>)">
