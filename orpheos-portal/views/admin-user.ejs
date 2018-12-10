@@ -12,17 +12,88 @@
     <div class="container admin">
         <div class="row justify-content-md-center">
             <div class="col-8">
-                <div class="card" style="max-height: 18rem;">
+                <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">User Administration</h5>
                         <div>
-                            some user info
+                            <a href="/admin/users/new">new user</a>
+                            <!-- page: <%= page %> -->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div class="row justify-content-md-center" style="margin-top: 3rem;">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Users</h5>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Access Level</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% if (users) {for (var i = 0; i < users.length; i++) { var userId = users[i].id%>
+                                <tr id="user-row-<%= userId %>">
+                                    <td>
+                                        <%= userId %>
+                                    </td>
+                                    <td>
+                                        <%= users[i].displayName %>
+                                    </td>
+                                    <td>
+                                        <%= users[i].username %>
+                                    </td>
+                                    <td>
+                                        <%= users[i].accessLevel %>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-danger remove-user" onclick="deleteUser(<%= userId %>)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% }}%>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </body>
+<script>
+
+    function deleteUser(id) {
+        let remove = confirm('Are you sure you wish to delete the user?');
+        if (remove) {
+            let url = `/admin/users/${id}`;
+            let rowId = `#user-row-${id}`;
+
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: function (msg) {
+                    console.log("Data Deleted: " + msg);
+                    $(rowId).remove();
+                }
+            });
+        }
+
+    }
+
+</script>
 
 </html>

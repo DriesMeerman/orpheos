@@ -9,7 +9,7 @@ It wont allow the database to write files. Not specifying a shared volume, will 
 ### Mysql
 To connect to the mysql image use the following command after all services have been started.
 ``` shell
-docker exec -it orpheos_mysql-database_1 bash
+docker exec -it orpheos_database_1 bash
 ```
 Once connected to the image run the following command.
 ```shell

@@ -12,16 +12,6 @@ body {
     opacity: 1;
 }
 
-/* body.coding {
-    background-image: url('../assets/coding_background.jpg');
-    background-size: cover;
-}
-
-body.city {
-    background-image: url('../assets/city_background.jpg');
-    background-size: cover;
-} */
-
 .container.login{
     margin-top: 10rem;
 }
@@ -32,4 +22,13 @@ body.city {
 
 .p-top-1{
     padding-top: 1rem
+}
+
+.red {
+    color: red;
+}
+
+.remove-user {
+    width: 30xp;
+    height: 30px;;
 }

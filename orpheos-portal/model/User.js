@@ -1,8 +1,6 @@
 const bcrypt =   require('bcryptjs');
 
 const SALTCOUNT = 12;
-const HASH = bcrypt.genSaltSync(SALTCOUNT);
-
 
 class User {
 
@@ -16,13 +14,12 @@ class User {
 		this.password = password || null;
 		this.email = userObj.email || null;
 		this.created = userObj.created || Date.now();
-		this.updated = userObj.updated || Date.now();
+        this.updated = userObj.updated || Date.now();
+        this.accessLevel = userObj.accessLevel || userObj.access_level || 0;
 	}
 
 	checkPassword(passwordToCheck) {
-        console.log("checking password", passwordToCheck, this.password);
         let result =  bcrypt.compareSync(passwordToCheck, this.password);
-        console.log('password was correct: ', result);
         return result;
     }
 
