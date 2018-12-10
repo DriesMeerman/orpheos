@@ -81,6 +81,7 @@ addDependency('tether', 'dist');
 app.use('/', require('./routes/home'));
 app.use('/profile', require('./routes/profile'));
 app.use('/admin', require('./routes/admin'));
+app.use('/status', require('./routes/status'))
 
 process.on('unhandledRejection', console.log.bind(console))
 

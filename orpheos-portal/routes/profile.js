@@ -5,16 +5,14 @@ var db = require('../db');
 
 const router = express.Router();
 
-
+router.use(require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }));
 
 router.get('/',
-    require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     function (req, res) {
         res.render('profile', { user: req.user });
     });
 
 router.post('/',
-    require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     (req, res) => {
         let body = req.body;
 

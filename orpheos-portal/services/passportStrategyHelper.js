@@ -11,8 +11,9 @@ class PassportStrategyHelper {
           if (!user) {
             return cb(null, false);
           }
-          console.log("Checking pass ", password, user)
+          console.log("Checking pass ", user)
           if (!user.checkPassword(password)) {
+              console.log('Cannot validate user');
             return cb(null, false);
           }
           return cb(null, user);

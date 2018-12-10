@@ -11,7 +11,7 @@ router.get('/', function isAuthenticated(req, res, next) {
     // CHECK THE USER STORED IN SESSION FOR A CUSTOM VARIABLE
     // you can do this however you want with whatever variables you set up
     // console.log(req);
-    if (req.user && req.user) {
+    if (req.user) {
         res.redirect('/home');
     } else {
         return next();
@@ -26,6 +26,11 @@ router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
     (req, res) => {
         res.render('home', { user: req.user });
     });
+
+router.get('/test', function (req, res) {
+    if (!req.user) res.redirect('/');
+    res.json(req.user);
+});
 
 // router.get('/login', (req, res) => {
 //     res.render('login');

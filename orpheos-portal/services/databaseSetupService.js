@@ -45,7 +45,7 @@ function setupDatabase() {
 async function initializeDatabase() {
     let createDBQuery = "CREATE DATABASE `orpheos`;";
     let createUserTableQuery = "CREATE TABLE `orpheos`.`user` ( `id` INT NOT NULL AUTO_INCREMENT ,`display_name` VARCHAR(20) NOT NULL , `user_name` VARCHAR(20) NOT NULL , `password` VARCHAR(60) NOT NULL , `access_level` INT, PRIMARY KEY (`id`), UNIQUE (`user_name`));";
-    let insertUserQuery = "INSERT INTO `user` (`id`, `display_name`, `user_name`, `password`, `access_level`) VALUES (NULL, 'Admin', 'admin', '$2a$12$UqaXAflkcYz7wPxqnpp6HublPKx5Lopy6WP841.pc98yKxOaBIdt6', " + CONSTANTS.roles.ADMIN + ");";
+    let insertUserQuery = "INSERT INTO `user` (`id`, `display_name`, `user_name`, `password`, `access_level`) VALUES (NULL, 'Admin', 'admin', '$2a$12$UqaXAflkcYz7wPxqnpp6HublPKx5Lopy6WP841.pc98yKxOaBIdt6', " + CONSTANTS.roles.ADMIN.value + ");";
 
     let queries = [createDBQuery, createUserTableQuery, insertUserQuery];
     var promises = [];

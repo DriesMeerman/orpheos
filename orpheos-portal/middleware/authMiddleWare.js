@@ -4,27 +4,29 @@ const CONSTANTS = require('../config/constants');
 function redirectNonAuthorized(redirectUrl){
    return function notAuthRedirect(req, res, next) {
         if (!req.user) {
-            res.redirect(redirectUrl);
+            return res.redirect(redirectUrl);
         } else {
             return next();
         }
     }
 }
 
-function checkRole(role) {
-    return function (req, res, next){
-        if (typeof(role) === 'string'){
-            role = CONSTANTS.roles[role];
+function accessRedirect(role, url){
+    return function(req, res, next){
+        if (!req.user){
+            return res.redirect(url);
         }
-
-        req.access_level = req.user.role;//role;
-
-        next();
+        if (req.user && req.user.accessLevel < role.value){
+            return res.redirect('/status/403');
+        }
+        return next();
     }
 }
 
+
+
 module.exports = {
     redirectNonAuthorized: redirectNonAuthorized,
-    checkRole: checkRole
+    accessRedirect: accessRedirect
 
 }
