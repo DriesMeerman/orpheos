@@ -23,11 +23,18 @@ const EXIT_CODES = {
     UNKNOWN_FAILURE: 5
 }
 
+const VIEW_TYPES = {
+    user: {
+        NEW: { title: "New User", state: "NEW", postUrl: "/admin/users/new" },
+        UPDATE: { title: "Update User", state: "UPDATE", postUrl: "" }
+    }
+}
+
 
 module.exports = Object.freeze({
     roles: ROLES,
     roles_lookup: ROLES_LOOKUP,
     tables: TABLES,
-    exit_codes: EXIT_CODES
-
+    exit_codes: EXIT_CODES,
+    view_types: VIEW_TYPES
 });

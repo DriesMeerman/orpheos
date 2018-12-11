@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <h5 class="card-title">User Administration</h5>
                         <div>
-                            <a href="/admin/users/new">new user</a>
+                            <a href="/admin/users/new">New User</a>
                             <!-- page: <%= page %> -->
                         </div>
                     </div>
@@ -45,7 +45,9 @@
                                 <% if (users) {for (var i = 0; i < users.length; i++) { var userId = users[i].id%>
                                 <tr id="user-row-<%= userId %>">
                                     <td>
-                                        <%= userId %>
+                                       <a href="/admin/users/edit/<%= userId %>">
+                                           <%= userId %>
+                                        </a>
                                     </td>
                                     <td>
                                         <%= users[i].displayName %>
@@ -57,9 +59,11 @@
                                         <%= users[i].accessLevel %>
                                     </td>
                                     <td>
+                                        <% if(users[i].id != user.id) { %>
                                         <button class="btn btn-outline-danger remove-user" onclick="deleteUser(<%= userId %>)">
                                             <i class="fa fa-trash"></i>
                                         </button>
+                                        <% } %>
                                     </td>
                                 </tr>
                                 <% }}%>

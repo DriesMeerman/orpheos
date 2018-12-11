@@ -1,0 +1,90 @@
+<html>
+
+<head>
+    <title>Orhpeos Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <% include ../templates/headTemplate.ejs %>
+</head>
+
+<body>
+    <% include ../templates/navbar.ejs %>
+    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/city_background.jpg"}) %>
+    <div class="container admin">
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <%= view.title %>
+                        </h5>
+                        <div>
+                            <form action="<%= view.postUrl %>" method="POST">
+
+                                <% if (view.state === "UPDATE") { %>
+                                <input type="hidden" name="id" value="<%= endUser.id %>">
+                                <% } %>
+
+                                <div class="form-group">
+                                    <label for="name">Display Name</label>
+                                    <input id="name" type="text" <% if (user.accessLevel < endUser.accessLevel) { %>
+                                    disabled="true"
+                                    <% } %>
+                                    value="<%= endUser.displayName %>"
+                                    name="display_name"
+                                    class="form-control"
+                                    placeholder="name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="username">Username</label>
+                                    <input id="username" type="text" <% if (view.state==="UPDATE" ) { %>
+                                    disabled="true"
+                                    <% } %>
+                                    value="<%= endUser.username %>"
+                                    name="username"
+                                    class="form-control"
+                                    placeholder="username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">Password</label>
+                                    <input id="password" type="password" <% if (user.accessLevel < endUser.accessLevel)
+                                        { %>
+                                    disabled="true"
+                                    <% } %>
+                                    name="password"
+                                    class="form-control"
+                                    placeholder="password">
+                                </div>
+                                <% if (accessLevels) { %>
+                                <div class="form-group">
+                                    <label for="access">Access Level</label>
+                                    <select id="access" <% if (user.accessLevel < endUser.accessLevel) { %>
+                                        disabled="true"
+                                        <% } %>
+                                        name="access"
+                                        value="
+                                        <%= endUser.accessLevel %>"
+                                        class="form-control">
+                                        <% for(var i = 0; i < accessLevels.length; i++) { var level = accessLevels[i]; %>
+                                        <option value="<%= level.key %>" <% if (level.value==endUser.accessLevel){ %>
+                                            selected="true"
+                                            <% } %> >
+                                            <%= level.name %>
+                                        </option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                                <% } %>
+
+                                <% if (user.accessLevel >= endUser.accessLevel || !endUser.accessLevel) { %>
+                                    <button type="submit" class="btn btn-outline-primary">Submit</button>
+                                <% } %>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -9,7 +9,7 @@ class User {
         this.displayName = userObj.displayName || userObj.display_name || null;
         this.username = userObj.username || userObj.user_name || null;
         
-        let password = hashPassword ? this.hashPassword(userObj.password) : userObj.password;
+        let password = hashPassword ? User.hashPassword(userObj.password) : userObj.password;
 
 		this.password = password || null;
 		this.email = userObj.email || null;
@@ -18,13 +18,14 @@ class User {
         this.accessLevel = userObj.accessLevel || userObj.access_level || 0;
 	}
 
+    
 	checkPassword(passwordToCheck) {
         let result =  bcrypt.compareSync(passwordToCheck, this.password);
         return result;
     }
 
-    hashPassword(password){
-        password = this.password ? this.password : password;
+    static hashPassword(password){
+        // password = this.password ? this.password : password;
         return bcrypt.hashSync(password, SALTCOUNT);
     }
 }

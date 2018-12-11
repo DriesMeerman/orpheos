@@ -19,11 +19,10 @@ router.post('/',
         let user = req.user;
         let updateUser = new User({id: user.id, displayName: body.display_name, password: body.password}, true);
 
+        
+
         db.users.updateUser(updateUser, (err, result) => {
-            if (err){
-                res.json(JSON.stringify(err));
-                return;
-            }
+            if (err) return res.json(err);
             res.redirect('/profile');//render('profile', { user: req.user }); 
         })
 

@@ -100,7 +100,8 @@ function updateUser(user, cb){
         let query = "UPDATE user SET ? WHERE id = ?";
         let payload = {
             display_name: user.displayName,
-            password: user.password
+            password: user.password,
+            access_level: user.accessLevel
         }
         if (!payload.password){
             delete payload.password;
