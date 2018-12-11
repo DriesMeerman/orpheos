@@ -6,6 +6,13 @@ To run you need docker and docker-compose.
 
 You have to setup the environment variables, copying the example ones to the same file names without .example is enough to make it work.
 
+To start the project execute the following command.
+```shell
+docker-compuse up --build
+```
+The project should startup and be available on http://localhost:4141/
+
+
 ### WINDOWS
 In the docker-compose file remove the volumes mapping since shared volumes don't work properly on windows.
 It wont allow the database to write files. Not specifying a shared volume, will cause it to create it's own volume where it will have write rights.
