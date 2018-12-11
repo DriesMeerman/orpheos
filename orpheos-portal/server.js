@@ -78,6 +78,8 @@ addDependency('tether', 'dist');
 
 // // Define routes.
 
+app.use(require('./middleware/navbarHelper').addNavitemsToLocals);
+
 app.use('/', require('./routes/home'));
 app.use('/profile', require('./routes/profile'));
 app.use('/admin', require('./routes/admin'));
