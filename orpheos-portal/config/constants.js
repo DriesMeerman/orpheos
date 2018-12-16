@@ -14,7 +14,15 @@ const ROLES_LOOKUP = Object.keys(ROLES).reduce((total, current) => {
 }, {});
 
 const TABLES = {
-    user: "User",
+    user: "user",
+    category: "category",
+    project: "project",
+    post: "post",
+    picture: "picture",
+    post_picture: "post_picture",
+    project_member: "project_member",
+    comment: "comment",
+    post_comment: "post_comment"
 }
 
 const EXIT_CODES = {
@@ -27,6 +35,10 @@ const VIEW_TYPES = {
     user: {
         NEW: { title: "New User", state: "NEW", postUrl: "/admin/users/new" },
         UPDATE: { title: "Update User", state: "UPDATE", postUrl: "" }
+    },
+    category: {
+        NEW: { title: "New Category", state: "NEW", postUrl: "/admin/categories/new" },
+        UPDATE: { title: "Update Category", state: "UPDATE", postUrl: "" }
     }
 }
 

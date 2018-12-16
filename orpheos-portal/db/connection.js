@@ -15,7 +15,7 @@ let config = {
 config.connectionLimit = config.connectionLimit && config.connectionLimit > 15 ? config.connectionLimit : 20;
 let pool = mysql.createPool(config);
 
-function executeQuery(query, values){
+async function executeQuery(query, values){
     return new Promise(function (resolve, reject) {
         pool.getConnection((err, con) => {
             if (err) {

@@ -1,0 +1,102 @@
+<html>
+
+<head>
+    <title>Orhpeos Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <% include ../templates/headTemplate.ejs %>
+</head>
+
+<body>
+    <% include ../templates/navbar.ejs %>
+    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/city_background.jpg"}) %>
+    <div class="container admin">
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Category Administration</h5>
+                        <div>
+                            <a href="/admin/categories/new">New Category</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-md-center" style="margin-top: 3rem;">
+            <div class="col-8">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Categories</h5>
+
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">id</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Description</th>
+                                    <th scope="col">Parent</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <% if (typeof(categories) != 'undefined') {for (var i = 0; i < categories.length; i++) { var category = categories[i]%>
+                                <tr id="cat-row-<%= category.id %>">
+                                    <td>
+                                       <a href="/admin/categories/edit/<%= category.id %>">
+                                           <%= category.id %>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <%= category.name %>
+                                    </td>
+                                    <td>
+                                        <%= category.description %>
+                                    </td>
+                                    <td title="<%= category.parent %>">
+                                            <%if (typeof(categories[category.parent]) != 'undefined') { %>
+                                            <%= categories[category.parent - 1].name %>
+                                            <% } %>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-danger remove-user" onclick="deleteCategory(<%= category.id %>)">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% }}%>
+
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+<script>
+
+    function deleteCategory(id) {
+        let remove = confirm('Are you sure you wish to delete this category?');
+        if (remove) {
+            let url = `/admin/categories/${id}`;
+            let rowId = `#cat-row-${id}`;
+
+            $.ajax({
+                type: "DELETE",
+                url: url,
+                success: function (msg) {
+                    console.log("Data Deleted: " + msg);
+                    $(rowId).remove();
+                }
+            });
+        }
+
+    }
+    
+</script>
+
+</html>
