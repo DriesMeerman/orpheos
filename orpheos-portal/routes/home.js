@@ -3,6 +3,7 @@ const passport = require('passport');
 const authMiddleWare = require('../middleware/authMiddleWare');
 // const User = require('../model/User');
 const router = express.Router();
+const db = require('../db');
 
 // Define routes.
 router.get('/', function isAuthenticated(req, res, next) {
@@ -18,13 +19,39 @@ router.get('/', function isAuthenticated(req, res, next) {
     }
 },
     (req, res) => {
-        // function (req, res) {
         res.render('index', { user: req.user });
     });
 
 router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
-    (req, res) => {
-        res.render('home', { user: req.user });
+    async (req, res) => {
+        let categories = await db.category.getCategoryMenuArray();//[];
+        categories = categories ? categories : [];
+        let menu = [
+            {
+                icon: 'fa-university',
+                name: 'Library',
+                children: [
+                    {
+                        icon: 'fa-home',
+                        name: 'My Projects'
+                    },
+                    {
+                        icon: 'fa-user',
+                        name: 'My Subscriptions'
+                    },
+                ]
+            }
+        ];
+
+        if (categories) {
+            menu.push({
+                icon: 'fa-tasks',
+                name: 'Categories',
+                children: categories
+            })
+        }
+
+        res.render('home', { user: req.user, sidebar: menu });
     });
 
 router.get('/test', function (req, res) {

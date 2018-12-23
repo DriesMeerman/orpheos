@@ -14,6 +14,43 @@ async function loadCategories(start, end) {
     });
 };
 
+async function getCategoryMenuArray(){
+    let categories = [];
+    let error;
+    try {
+        categories = await loadCategories(0, 100);
+    } catch (ex){
+        error = ex;
+    }
+
+    let catObject = {};
+    categories.forEach(cat => {
+        catObject[cat.id] = {
+            name: cat.name,
+            parent: cat.parent,
+            children: []
+        }
+    });
+
+    categories.forEach(cat => {
+        if (cat.parent) {
+            catObject[cat.parent]
+                .children.push(catObject[cat.id]);
+        }
+    });
+
+    let topLevel = categories.filter(x => !x.parent);
+    let result = topLevel.map(item => {
+        return catObject[item.id];
+    });
+
+
+    return new Promise((resolve, reject) => {
+        if (error) return reject(error);
+        resolve(result);
+    });
+}
+
 async function insertCategory(category){
     let query = "INSERT INTO " + CONSTANTS.tables.category  + " SET ?";
     let payload = {
@@ -53,4 +90,5 @@ module.exports = {
     loadCategories: loadCategories,
     insertCategory: insertCategory,
     deleteCategory: deleteCategory,
+    getCategoryMenuArray: getCategoryMenuArray
 }
