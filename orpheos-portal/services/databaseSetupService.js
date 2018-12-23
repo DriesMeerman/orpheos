@@ -1,6 +1,23 @@
 const retry = require('async-retry')
 const db = require('../db/connection');
 const CONSTANTS = require('../config/constants');
+const User = require("../model/User");
+
+let executeQuery = db.executeQuery;
+
+const sqlQueries = {
+    TABLE:{
+        USER: "CREATE TABLE `orpheos`.`user` (`id` INT NOT NULL AUTO_INCREMENT ,`display_name` VARCHAR(20) NOT NULL ,`user_name` VARCHAR(20) NOT NULL ,`password` VARCHAR(60) NOT NULL , `access_level` INT, `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,`updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`), UNIQUE (`user_name`));",
+        CATEGORY: "CREATE TABLE `orpheos`.`category` (`id` INT NOT NULL AUTO_INCREMENT ,`name` VARCHAR(64) NOT NULL ,`description` VARCHAR(255), `parent` INT ,PRIMARY KEY (`id`), FOREIGN KEY (`parent`) REFERENCES category(`id`) ON DELETE CASCADE);",
+        PROJECT: "CREATE TABLE `orpheos`.`project` (`id` INT NOT NULL AUTO_INCREMENT ,`name` VARCHAR(64) NOT NULL ,`description` VARCHAR(255) ,`category` INT ,`created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,`updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`), FOREIGN KEY (`category`) REFERENCES category(`id`));",
+        PROJECT_MEMBER: "CREATE TABLE `orpheos`.`project_member` (`id` INT NOT NULL AUTO_INCREMENT ,`project` INT NOT NULL,`user` INT NOT NULL,PRIMARY KEY (`id`),FOREIGN KEY (`project`) REFERENCES project(`id`),FOREIGN KEY (`user`) REFERENCES user(`id`));",
+        POST: "CREATE TABLE `orpheos`.`post` (`id` INT NOT NULL AUTO_INCREMENT ,`title` VARCHAR(64) NOT NULL ,`description` VARCHAR(255) ,`user` INT ,`created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,`updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`), FOREIGN KEY (`user`) REFERENCES user(`id`));",
+        POST_COMMENT: "CREATE TABLE `orpheos`.`post_comment` (`id` INT NOT NULL AUTO_INCREMENT ,`text` VARCHAR(255) ,`user` INT NOT NULL,`post` INT NOT NULL,`created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,`updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`),FOREIGN KEY (`post`) REFERENCES post(`id`),FOREIGN KEY (`user`) REFERENCES user(`id`));",
+        PICTURE: "CREATE TABLE `orpheos`.`picture` (`id` INT NOT NULL AUTO_INCREMENT ,`name` VARCHAR(64) NOT NULL ,`created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,`updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,PRIMARY KEY (`id`));",
+        POST_PICTURE: "CREATE TABLE `orpheos`.`post_picture` (`id` INT NOT NULL AUTO_INCREMENT ,`post` INT NOT NULL,`picture` INT NOT NULL,PRIMARY KEY (`id`),FOREIGN KEY (`post`) REFERENCES picture(`id`),FOREIGN KEY (`picture`) REFERENCES post(`id`));",
+    }
+}
+
 
 function dbTestThing() {
     db.users.findById('1', (err, res) => {
@@ -45,27 +62,35 @@ function setupDatabase() {
 async function initializeDatabase() {
     let createDBQuery = "CREATE DATABASE `orpheos`;";
     let createUserTableQuery = "CREATE TABLE `orpheos`.`user` ( `id` INT NOT NULL AUTO_INCREMENT ,`display_name` VARCHAR(20) NOT NULL , `user_name` VARCHAR(20) NOT NULL , `password` VARCHAR(60) NOT NULL , `access_level` INT, PRIMARY KEY (`id`), UNIQUE (`user_name`));";
-    let insertUserQuery = "INSERT INTO `user` (`id`, `display_name`, `user_name`, `password`, `access_level`) VALUES (NULL, 'Admin', 'admin', '$2a$12$UqaXAflkcYz7wPxqnpp6HublPKx5Lopy6WP841.pc98yKxOaBIdt6', " + CONSTANTS.roles.ADMIN.value + ");";
+    
+    let admin = new User({username: "admin", password: "admin", accessLevel: CONSTANTS.roles.GOD.value, displayName: "Administrator" }, true);
+    let insertUserQuery = "INSERT INTO `user` (`id`, `display_name`, `user_name`, `password`, `access_level`) VALUES (NULL, '" + admin.displayName + "', '" + admin.username + "', '" + admin.password + "', " + admin.accessLevel + ");";
 
-    let queries = [createDBQuery, createUserTableQuery, insertUserQuery];
-    var promises = [];
+    // let queries = [createDBQuery, createUserTableQuery, insertUserQuery];
+    // var promises = [];
 
     return new Promise(async (res, rej) => {
         console.log('Start db init');
         try {
             console.log("TRY DB CREATE")
             await executeQuery(createDBQuery);
-            console.log('a')
         } catch (e){
             console.log('ERRa')
         }
 
         try {
             console.log("TRY DB TABLE")
-            await executeQuery(createUserTableQuery);
-            console.log('b')
+            // await executeQuery(createUserTableQuery);
+            await executeQuery(sqlQueries.TABLE.USER);
+            await executeQuery(sqlQueries.TABLE.CATEGORY);
+            await executeQuery(sqlQueries.TABLE.PROJECT);
+            await executeQuery(sqlQueries.TABLE.PROJECT_MEMBER);
+            await executeQuery(sqlQueries.TABLE.POST);
+            await executeQuery(sqlQueries.TABLE.PICTURE);
+            await executeQuery(sqlQueries.TABLE.POST_COMMENT);
+            await executeQuery(sqlQueries.TABLE.POST_PICTURE);
         } catch (e){
-            console.log('ERRb')
+            console.log('ERR', e);
         }
 
         try {
@@ -79,61 +104,33 @@ async function initializeDatabase() {
         res(true, 'great success');
     });
 
-    // queries.forEach((query) => {
-    //     promises.push(new Promise(function (resolve, reject) {
-    //         db.pool.getConnection((err, con) => {
-    //             if (err) {
-    //                 reject(err);
-    //                 return;
-    //             }
-    //             console.log("inserting " + query);
-
-    //             con.query(query, null, (err, result) => {
-    //                 if (err) {
-    //                     reject(err);
-    //                 } else {
-    //                     resolve(result);
-    //                 }
-    //                 con.release();
-    //             });
-
-    //         });
-    //     }));
-    // });
-
-    // return Promise.all(promises);
-
-    // Promise.all(promises).then((values) => {
-    //     console.log('done insertion', values);
-    // })
-    // return promises;
 }
 
-async function executeQuery(query){
-    return new Promise(function (resolve, reject) {
-        db.pool.getConnection((err, con) => {
-            console.log("inserting " + query);
-            if (err) {
-                console.log('error bruh')
-                reject(err);
-                return;
-            }
+// async function executeQuery(query){
+//     return new Promise(function (resolve, reject) {
+//         db.pool.getConnection((err, con) => {
+//             console.log("inserting " + query);
+//             if (err) {
+//                 console.log('error bruh')
+//                 reject(err);
+//                 return;
+//             }
             
 
-            con.query(query, null, (err, result) => {
-                console.log('query callback')
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
-                }
-                console.log('release connection')
-                con.release();
-            });
+//             con.query(query, null, (err, result) => {
+//                 console.log('query callback')
+//                 if (err) {
+//                     reject(err);
+//                 } else {
+//                     resolve(result);
+//                 }
+//                 console.log('release connection')
+//                 con.release();
+//             });
 
-        });
-    });
-}
+//         });
+//     });
+// }
 
 async function db_userTableExists_query() {
     let que = `SELECT * FROM orpheos.user LIMIT 1;`;

@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../model/User');
+const Category = require('../model/Category')
 const router = express.Router();
 const CONSTANTS = require('../config/constants');
 const auth = require('../middleware/authMiddleWare');
@@ -13,6 +14,58 @@ router.get('/',
     function (req, res) {
         res.render('admin', { user: req.user });
     });
+
+router.get('/categories', async (req, res) => {
+    let page = 0;
+    let categories = [];
+    try {
+        categories = await db.category.loadCategories(0, 50);
+    } catch (ex){
+        console.warn("Error", ex);
+    }
+    
+    return res.render('admin-category', {user: req.user, page: page, categories: categories})
+});
+
+router.get('/categories/new', (req, res) => {
+    return res.render('admin-category-change', {
+        user: req.user,
+        view: CONSTANTS.view_types.category.NEW,
+        category: {}
+    });
+});
+
+router.post('/categories/new', async (req, res) => {
+    let body = req.body;
+
+    let payload = {
+        name: body.name,
+        description: body.description,
+        parent: body.parent
+    }
+
+    let category = new Category(payload);
+    try {
+        await db.category.insertCategory(category);
+    } catch (e){
+        res.json(e);
+    }
+
+    return res.redirect('/admin/categories');
+});
+
+router.delete('/categories/:id', async (req, res) => {
+    let id = req.params.id;
+    let result = "";
+    try {
+        result = await db.category.deleteCategory(id);
+    } catch (ex) {
+        return res.json(ex);
+    }
+
+    return res.json(result)
+});
+
 
 router.get('/users',
     function (req, res) {
