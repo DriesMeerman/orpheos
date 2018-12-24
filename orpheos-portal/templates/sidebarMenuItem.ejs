@@ -1,0 +1,20 @@
+<% if (typeof(item) != 'undefined') {
+   var depthClass = depth ? "sub-" + depth : "";
+   var link = item.link ? item.link : "";
+   var elemType = depth && depth > 0 ? "div" : "li"; %>
+
+    <<%= elemType %> class="nav-item <%= depthClass%>">
+        <a class="nav-link pl-0" href="<%= link%>">
+            <i class="fa fa-fw <%= item.icon %>"></i>
+            <span class="d-none d-md-inline"><%= item.name%></span>
+        </a>
+        <% if (item.children && item.children.length) { %>
+        <div class="children">
+            <% for (var i = 0; i < item.children.length; i++) {
+               var childItem = item.children[i]; %>
+            <%- include('../templates/sidebarMenuItem', {item: childItem, depth: depth + 1}) %>
+            <% } %>
+        </div>
+        <% } %>
+    </<%= elemType %>>
+<% } %>

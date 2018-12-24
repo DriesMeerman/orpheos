@@ -1,36 +1,45 @@
 <html>
-
 <head>
     <title>Orhpeos Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <% include ../templates/headTemplate.ejs %>
 </head>
 
-
-
 <body>
     <% include ../templates/navbar.ejs %>
-    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/coding_background.jpg"}) %>
-    <div class="container login">
-        <div class="row justify-content-md-center">
-            <div class="col-6">
-                <div class="card" style="max-height: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Home</h5>
-                        <div>
-                            <div>
-                                <p>Hello,
-                                    <%= user.displayName %>. 
-                            </div>
-                            <div>
-                                Homepage
+    <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/container_jump.jpg"}) %>
+
+    <div class="container-fluid">
+        <div class="row fil-no-nav">
+            <% include ../templates/homeSidebarLeft.ejs %>
+
+            <main class="col bg-faded py-3">
+                <div class="container login">
+                    <div class="row justify-content-md-center">
+                        <div class="col-6">
+                            <div class="card opague-white-background">
+                                <div class="card-body">
+                                    <h5 class="card-title">Home</h5>
+                                    <div>
+                                        <div>
+                                            <p>Hello,
+                                                <%= user.displayName %>.
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
+
+    
+    <button class="mat-btn-white">
+        <i class="fa fa-plus fa-2x"></i>
+    </button>
+    
 </body>
 
 </html>

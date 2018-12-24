@@ -4,6 +4,15 @@ body {
     
 }
 
+.white-shadow-bottom {
+    box-shadow: 2px 4px 20px -4px rgba(140, 140, 140, 0.3);
+    z-index: 1;
+}
+
+.opague-white-background {
+    background-color: rgba(255, 255, 255, 0.71);
+}
+
 .invisible {
     opacity: 0;
 }
@@ -31,4 +40,42 @@ body {
 .remove-user {
     width: 30xp;
     height: 30px;;
+}
+.fil-no-nav {
+    height: calc( 100% - 56px);
+}
+
+.mat-btn-white {
+    position: fixed;
+    z-index: 10;
+    bottom: 1rem;
+    right: 1rem;
+    border-radius: 50%;
+    width: 50px;
+    outline: none !important;
+    height: 50px;
+    text-align: center;
+    border: none;
+}
+
+.mat-btn-white:hover {
+    color: white;
+    background-color: #343a40;
+    cursor: pointer;
+}
+
+.l-margin-1 {
+    margin: 1rem;
+}
+
+.sub-1 {
+    padding-left: 1rem;
+}
+
+.sub-2 {
+    padding-left: 2rem;
+}
+
+.sub-3 {
+    padding-left: 3rem;
 }

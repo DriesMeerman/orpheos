@@ -1,0 +1,15 @@
+
+<% if (typeof(sidebar) != 'undefined') {%>
+<aside class="col-12 col-md-2 p-0 bg-dark">
+    <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start py-2">
+        <div class="collapse navbar-collapse">
+            <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between">
+                <% for (var i = 0; i < sidebar.length; i++) {%>
+                <% var menuItem = sidebar[i];%>
+                <%- include('../templates/sidebarMenuItem.ejs', {item: menuItem, depth: 0}) %>
+                <% } %>
+            </ul>
+        </div>
+    </nav>
+</aside>
+<% } %>
