@@ -35,10 +35,10 @@ router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
                         icon: 'fa-home',
                         name: 'My Projects'
                     },
-                    {
-                        icon: 'fa-user',
-                        name: 'My Subscriptions'
-                    },
+                    // {
+                    //     icon: 'fa-user',
+                    //     name: 'My Subscriptions'
+                    // },
                 ]
             }
         ];

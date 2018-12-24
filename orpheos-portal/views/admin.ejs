@@ -21,6 +21,11 @@
                         <div>
                             <a href="/admin/categories">Category administration</a>
                         </div>
+                        <% if (typeof(isGod) != 'undefined' && isGod) { %>
+                        <div>
+                            <a href="/admin/adminquery">Admin query</a>
+                        </div>
+                        <% } %>
                     </div>
                 </div>
             </div>

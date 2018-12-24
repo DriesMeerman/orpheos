@@ -12,7 +12,8 @@ router.use(auth.accessRedirect(CONSTANTS.roles.ADMIN, '/status/403'));
 router.get('/',
     require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }),
     function (req, res) {
-        res.render('admin', { user: req.user });
+        let isGod = CONSTANTS.roles.GOD.value === req.user.accessLevel;
+        res.render('admin', { user: req.user, isGod:  isGod});
     });
 
 router.get('/categories', async (req, res) => {
@@ -52,6 +53,29 @@ router.post('/categories/new', async (req, res) => {
     }
 
     return res.redirect('/admin/categories');
+});
+
+router.get('/adminquery',
+    auth.accessRedirect(CONSTANTS.roles.GOD, '/status/403'),
+    async (req, res) => {
+        res.render('admin-query', {user: req.user});
+    });
+
+router.post('/adminquery',
+    auth.accessRedirect(CONSTANTS.roles.GOD, '/status/403'),
+    async (req, res) => {
+        let query = req.body.query;
+        if (!query){
+            return res.json({error:"No query passed", body: req.body});
+        }
+        try {
+            let result = await db.connection.executeQuery(query);
+            let data = result.map(r => r);//mapped since pure row data doesn't want to be serialized;
+            return res.render('admin-query', {user: req.user, result: data});
+        } catch (ex){
+            console.log('ex?', ex);
+            return res.json(ex);
+        }
 });
 
 router.delete('/categories/:id', async (req, res) => {
