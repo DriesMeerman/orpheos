@@ -73,7 +73,7 @@ router.post('/adminquery',
             let data = result.map(r => r);//mapped since pure row data doesn't want to be serialized;
             return res.render('admin-query', {user: req.user, result: data});
         } catch (ex){
-            console.log('ex?', ex);
+            console.log('ex', ex);
             return res.json(ex);
         }
 });

@@ -38,8 +38,13 @@
                         <h5 class="card-title">
                             Result
                         </h5>
+                        <div>"result" also available in browser console.</div>
                         <div>
                             <pre><%- JSON.stringify(result, 0, 4)%></pre>
+                            <script>
+                                window.result = <%- JSON.stringify(result, 0, 4)%>;
+                                console.log("result", result);
+                            </script>
                         </div>
                     </div>
                 </div>
