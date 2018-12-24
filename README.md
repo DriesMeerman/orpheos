@@ -8,7 +8,7 @@ You have to setup the environment variables, copying the example ones to the sam
 
 To start the project execute the following command.
 ```shell
-docker-compuse up --build
+docker-compose up --build
 ```
 The project should startup and be available on http://localhost:4141/
 
