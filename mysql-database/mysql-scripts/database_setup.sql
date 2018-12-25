@@ -24,9 +24,12 @@ CREATE TABLE `orpheos`.`project` (
 `name` VARCHAR(64) NOT NULL ,
 `description` VARCHAR(255) ,
 `category` INT ,
+`owner` INT,
 `created` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
 `updated` TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
-PRIMARY KEY (`id`), FOREIGN KEY (`category`) REFERENCES category(`id`));
+PRIMARY KEY (`id`), 
+FOREIGN KEY (`category`) REFERENCES category(`id`),
+FOREIGN KEY (`owner`) REFERENCES user(`id`));
 
 CREATE TABLE `orpheos`.`project_member` (
 `id` INT NOT NULL AUTO_INCREMENT ,

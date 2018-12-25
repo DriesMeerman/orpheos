@@ -26,6 +26,7 @@ async function getCategoryMenuArray(){
     let catObject = {};
     categories.forEach(cat => {
         catObject[cat.id] = {
+            id: cat.id,
             name: cat.name,
             parent: cat.parent,
             children: []

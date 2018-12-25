@@ -33,7 +33,8 @@ router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
                 children: [
                     {
                         icon: 'fa-home',
-                        name: 'My Projects'
+                        name: 'My Projects',
+                        link: '/project/user/' + req.user.id
                     },
                     // {
                     //     icon: 'fa-user',
@@ -44,6 +45,9 @@ router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
         ];
 
         if (categories) {
+
+            categories = categories.map(addLinkToCategory);
+
             menu.push({
                 icon: 'fa-tasks',
                 name: 'Categories',
@@ -52,12 +56,21 @@ router.get('/home', authMiddleWare.redirectNonAuthorized('/'),
         }
 
         res.render('home', { user: req.user, sidebar: menu });
-    });
+});
+
+function addLinkToCategory(cat){
+    cat.link = "/project/category/" + cat.id;
+    if (cat.children && cat.children.length > 0){
+        cat.children.map(addLinkToCategory);
+    }
+    return cat;
+};
 
 router.get('/test', function (req, res) {
     if (!req.user) res.redirect('/');
     res.json(req.user);
 });
+
 
 // router.get('/login', (req, res) => {
 //     res.render('login');

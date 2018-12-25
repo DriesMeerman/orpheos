@@ -1,0 +1,1 @@
+INSERT INTO `category` VALUES (1,'Technology',NULL,NULL),(2,'Software',NULL,1),(3,'Hardware',NULL,1),(4,'DIY',NULL,NULL),(5,'Furniture',NULL,4);
