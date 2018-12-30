@@ -1,0 +1,28 @@
+<%
+let modalBody = `
+<form id="project-form" method="POST" action="/project/new">
+    <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" class="form-control">
+    </div>
+    <div>
+        <label for="description">Description</label>
+        <textarea id="description" name="description" class="form-control"></textarea>
+    </div>
+    <div>
+        <label for="category" >Category</label>
+        <input id="category" name="category" type="number" class="form-control">
+    </div>
+</form>
+`;
+%>
+
+<%- include('../templates/popupModal.ejs', {options: {
+id: 'new-project-modal',
+body: modalBody,
+title: 'New Project',
+formId: 'project-form'
+}}) %>
+<button class="mat-btn-white" class="btn btn-primary" data-toggle="modal" data-target="#new-project-modal">
+    <i class="fa fa-plus fa-2x"></i>
+</button>

@@ -67,7 +67,14 @@ async function deleteProject(id) {
 let findProjectsByName     = makeGetFunction("SELECT * FROM " + CONSTANTS.tables.project + " project WHERE project.name LIKE CONCAT('%', ?,  '%')")
 let findProjectsByCategory = makeGetFunction("SELECT * FROM " + CONSTANTS.tables.project + " project WHERE category = ?");
 let findProjectsByOwner    = makeGetFunction("SELECT * FROM " + CONSTANTS.tables.project + " project WHERE owner = ?");
-let getAllProjects         = makeGetFunction("SELECT * FROM " + CONSTANTS.tables.project + " project LIMIT ?,?");
+let getAllProjectsRaw      = makeGetFunction("SELECT * FROM " + CONSTANTS.tables.project + " project LIMIT ?,?");
+
+let getAllProjects = makeGetFunction(`
+SELECT p.id, p.name, p.description, c.name as category, p.owner, p.created, p.updated, u.id, u.display_name AS owner 
+FROM ${CONSTANTS.tables.project} AS p 
+LEFT JOIN ${CONSTANTS.tables.user} AS u ON p.owner = u.id
+LEFT JOIN ${CONSTANTS.tables.category} as c ON p.category = c.id ORDER BY p.updated DESC LIMIT ?,?;
+`);
 
 module.exports = {
     insertProject: insertProject,
