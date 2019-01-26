@@ -22,8 +22,8 @@ async function insertProject(project) {
     });
 };
 
-async function getProjectById(id) {
-    let query = "SELECT * FROM " + CONSTANTS.tables.project  + " proj WHERE id = " + id + "ORDER BY proj.id LIMIT 1";
+async function getProjectByIdOld(id) {
+    let query = "SELECT * FROM " + CONSTANTS.tables.project  + " proj WHERE id = " + id + " ORDER BY proj.id LIMIT 1";
     
         return new Promise(async (resolve, reject) => {
             try {
@@ -74,6 +74,13 @@ SELECT p.id, p.name, p.description, c.name as category, p.owner, p.created, p.up
 FROM ${CONSTANTS.tables.project} AS p 
 LEFT JOIN ${CONSTANTS.tables.user} AS u ON p.owner = u.id
 LEFT JOIN ${CONSTANTS.tables.category} as c ON p.category = c.id ORDER BY p.updated DESC LIMIT ?,?;
+`);
+
+let getProjectById = makeGetFunction(`
+SELECT p.id, p.name, p.description, c.name as category, p.owner, p.created, p.updated, u.id, u.display_name AS owner 
+FROM ${CONSTANTS.tables.project} AS p 
+LEFT JOIN ${CONSTANTS.tables.user} AS u ON p.owner = u.id
+LEFT JOIN ${CONSTANTS.tables.category} as c ON p.category = c.id WHERE p.id = ?;
 `);
 
 module.exports = {

@@ -4,6 +4,7 @@ const db = require('../db');
 const CONSTANTS = require('../config/constants');
 const auth = require('../middleware/authMiddleWare');
 const router = express.Router();
+const MenuService = require('../services/menuService');
 
 router.use(require('connect-ensure-login').ensureLoggedIn({ redirectTo: "/" }));
 router.use(auth.accessRedirect(CONSTANTS.roles.NORMAL, '/status/403'));
@@ -22,6 +23,16 @@ router.get('/', async (req, res) => {
     res.redirect('/project/all');
 });
 
+
+router.get('/id/:id', async (req, res) => {
+    let id = req.params.id;
+    if (!id){
+        res.status(404);//redirect('')
+    }
+    let project = await db.project.getProjectById(id);
+    return res.json(project);
+});
+
 router.get('/all', async (req, res) => {
     let pageSize = 100;
     let page = 0;
@@ -36,22 +47,39 @@ router.get('/all', async (req, res) => {
 
 router.get('/category/:id', async (req, res) => {
     let category = req.params.id;
-    try {
-        let projects = await db.project.findProjectsByCategory(category);
-        return res.json(projects);
-    } catch (ex) {
-        return res.json(ex);
-    }
+
+    let menu = [];
+        let projects = [];
+        try {
+            menu = await MenuService.createHomeScreenMenu(req.user);
+            projects = await await db.project.findProjectsByCategory(category);
+        } catch (ex) {
+            console.log(ex);
+        }
+
+        res.render('home', {
+            user: req.user,
+            sidebar: menu,
+            view: "../partials/homeProject.ejs",
+            data: { projects: projects }
+        });
 });
 
 router.get('/user/:id', async (req, res) => {
     let user = req.params.id;
     try {
-        let projects = await db.project.findProjectsByOwner(user);
-        return res.json(projects);
+        menu = await MenuService.createHomeScreenMenu(req.user);
+        projects = await db.project.findProjectsByOwner(user);
     } catch (ex) {
-        return res.json(ex);
+        console.log(ex);
     }
+
+    res.render('home', {
+        user: req.user,
+        sidebar: menu,
+        view: "../partials/homeProject.ejs",
+        data: { projects: projects }
+    });
 });
 
 router.post('/new', async (req, res) => {

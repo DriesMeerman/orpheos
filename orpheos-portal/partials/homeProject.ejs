@@ -2,29 +2,31 @@
         <% for (var i = 0; i < projects.length; i++) { 
             let project = projects[i];    
         %>
-
+        
         <div class="row justify-content-md-center l-margin-1">
                 <div class="col-10">
-                    <div class="card opague-white-background project">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= project.name %>
-                            </h5>
-                            <div>
+                    <a class="no-style" href="/project/id/<%= project.id %>">
+                        <div class="card opague-white-background project">
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= project.name %>
+                                </h5>
                                 <div>
-                                    <%= project.description %>
-                                </div>
-                                <div class="minor-text">
-                                    <div class="float-left">
-                                            <%= project.category%>
+                                    <div>
+                                        <%= project.description %>
+                                    </div>
+                                    <div class="minor-text">
+                                        <div class="float-left">
+                                                <%= project.category%>
+                                            </div>
+                                        <div class="float-right">
+                                            <%= project.owner%>
                                         </div>
-                                    <div class="float-right">
-                                        <%= project.owner%>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
 
