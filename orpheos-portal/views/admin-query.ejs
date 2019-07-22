@@ -9,11 +9,16 @@
 <body>
     <% include ../templates/navbar.ejs %>
     <%- include('../templates/backgroundPartial.ejs', {imageUrl: "/assets/code_background_glasses.jpg"}) %>
+    <%
+        if (typeof(query) == 'undefined') {
+            query = "";
+        }
+    %>
     <div class="container admin">
 
         <div class="row justify-content-md-center">
             <div class="col-12">
-                <div class="card l-margin-1 opague-white-background">
+                <div class="card l-margin-1 translucent-white-background">
                     <div class="card-body">
                         <h5 class="card-title">
                             Query
@@ -21,7 +26,7 @@
                         <div>
                             <form method="POST">
                                 <label for="query"></label>
-                                <textarea id="query" style="margin-bottom: 1rem;" class="form-control" name="query"></textarea>
+                                <textarea id="query" style="margin-bottom: 1rem;" class="form-control" name="query"><%= query %></textarea>
                                 <button type="submit" class="btn btn-outline-primary">Submit</button>
                             </form>
                         </div>
@@ -33,7 +38,7 @@
         <% if (typeof(result) != 'undefined') { %>
         <div class="row justify-content-md-center">
             <div class="col-12">
-                <div class="card l-margin-1 opague-white-background">
+                <div class="card l-margin-1 translucent-white-background">
                     <div class="card-body">
                         <h5 class="card-title">
                             Result

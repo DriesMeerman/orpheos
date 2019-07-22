@@ -71,7 +71,7 @@ router.post('/adminquery',
         try {
             let result = await db.connection.executeQuery(query);
             let data = result.map(r => r);//mapped since pure row data doesn't want to be serialized;
-            return res.render('admin-query', {user: req.user, result: data});
+            return res.render('admin-query', {user: req.user, result: data, query: query});
         } catch (ex){
             //console.log('ex', ex);
             //return res.json(ex);
@@ -79,7 +79,7 @@ router.post('/adminquery',
                 ex = ex.toString();
             }
 
-            return res.render('admin-query', {user: req.user, result: ex});
+            return res.render('admin-query', {user: req.user, result: ex, query: query});
         }
 });
 
