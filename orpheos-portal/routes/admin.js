@@ -209,7 +209,6 @@ router.get('/users/edit/:id',
 
 
         if (body.password && body.password != ''){
-            console.log('hoeren jong', body.password);
             data.password = User.hashPassword(body.password);
         }
         console.log('Updating new user', data);
@@ -227,13 +226,6 @@ router.get('/users/edit/:id',
             })
         });
 
-        // db.users.updateUser(user, (err, response) => {
-        //     if (err) {
-        //         res.json(err);
-        //     } else {
-        //         res.redirect('/admin/users');
-        //     }
-        // });
     });
 
 function _getAccessLevels(accessLevel) {

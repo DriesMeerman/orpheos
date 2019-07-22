@@ -1,5 +1,6 @@
 # Orpheos
 Project management tool.
+To see how it looks and works see the [Showcase.md](/showcase.md)
 
 ## How to use
 To run you need docker and docker-compose.

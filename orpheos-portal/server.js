@@ -112,16 +112,6 @@ async function init(){
 
 init();
 
-// function letsGo(){
-//     console.log('letsago');
-//     setupDatabase();
-//     //dbTestThing();
-// }
-
-
-// setupDatabase();
-// app.listen(PORT);
-
 function addDependency(name, dist) {
     dist = dist ? name + "/" + dist : name;
     console.log('adding dep', path.resolve() + '/node_modules/' + dist);
