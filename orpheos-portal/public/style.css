@@ -1,81 +1,108 @@
+html,
 body {
-    transition: opacity .8s ease;
-    background-color: #505050;
-    
+  height: 100%;
+}
+
+body {
+  transition: opacity 0.8s ease;
+  background-color: #505050;
+}
+
+a.no-style {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 .white-shadow-bottom {
-    box-shadow: 2px 4px 20px -4px rgba(140, 140, 140, 0.3);
-    z-index: 1;
+  box-shadow: 2px 4px 20px -4px rgba(140, 140, 140, 0.3);
+  z-index: 1;
+}
+
+.translucent-white-background {
+  background-color: rgba(255, 255, 255, 0.71);
 }
 
 .opague-white-background {
-    background-color: rgba(255, 255, 255, 0.71);
+  background-color: rgba(255, 255, 255, 0.9);
+}
+
+.card.project .minor-text {
+  margin-top: 1rem;
+  font-size: 0.8rem;
 }
 
 .invisible {
-    opacity: 0;
+  opacity: 0;
 }
 
 .visible {
-    opacity: 1;
+  opacity: 1;
 }
 
-.container.login{
-    margin-top: 10rem;
+.container.login {
+  margin-top: 10rem;
 }
 
 .admin {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
-.p-top-1{
-    padding-top: 1rem
+.p-top-1 {
+  padding-top: 1rem;
 }
 
 .red {
-    color: red;
+  color: red;
 }
 
 .remove-user {
-    width: 30xp;
-    height: 30px;;
+  width: 30xp;
+  height: 30px;
 }
+
 .fil-no-nav {
-    height: calc( 100% - 56px);
+  height: 100%;
+}
+
+.container-fluid {
+  height: calc(100% - 56px);
 }
 
 .mat-btn-white {
-    position: fixed;
-    z-index: 10;
-    bottom: 1rem;
-    right: 1rem;
-    border-radius: 50%;
-    width: 50px;
-    outline: none !important;
-    height: 50px;
-    text-align: center;
-    border: none;
+  position: fixed;
+  z-index: 10;
+  bottom: 1rem;
+  right: 1rem;
+  border-radius: 50%;
+  width: 50px;
+  outline: none !important;
+  height: 50px;
+  text-align: center;
+  border: none;
 }
 
 .mat-btn-white:hover {
-    color: white;
-    background-color: #343a40;
-    cursor: pointer;
+  color: white;
+  background-color: #343a40;
+  cursor: pointer;
 }
 
 .l-margin-1 {
-    margin: 1rem;
+  margin: 1rem;
+}
+
+.flow {
+  overflow: auto;
 }
 
 .sub-1 {
-    padding-left: 1rem;
+  padding-left: 1rem;
 }
 
 .sub-2 {
-    padding-left: 2rem;
+  padding-left: 2rem;
 }
 
 .sub-3 {
-    padding-left: 3rem;
+  padding-left: 3rem;
 }

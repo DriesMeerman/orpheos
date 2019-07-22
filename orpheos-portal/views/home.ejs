@@ -1,5 +1,4 @@
 <html>
-
 <head>
     <title>Orhpeos Project</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -14,57 +13,22 @@
         <div class="row fil-no-nav">
             <% include ../templates/homeSidebarLeft.ejs %>
 
-            <main class="col bg-faded py-3">
-                <div class="container login">
-                    <div class="row justify-content-md-center">
-                        <div class="col-6">
-                            <div class="card opague-white-background">
-                                <div class="card-body">
-                                    <h5 class="card-title">Home</h5>
-                                    <div>
-                                        <div>
-                                            <p>Hello,
-                                                <%= user.displayName %>.
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <main class="col bg-faded py-3 flow">
+                <% if (typeof(view) == 'undefined') {
+                    view = '../partials/homeEmpty.ejs';
+                }
+                
+                if (typeof(data) == 'undefined') {
+                    data = {};
+                }
+
+                %>
+
+                <%- include(view, data) %>
+
             </main>
         </div>
     </div>
-
-    <%
-        let modalBody = `
-        <form id="project-form" method="POST" action="/project/new">
-            <div>
-                <label for="name">Name</label>
-                <input id="name" name="name" type="text" class="form-control">
-            </div>
-            <div>
-                <label for="description">Description</label>
-                <textarea id="description" name="description" class="form-control"></textarea>
-            </div>
-            <div>
-                <label for="category" >Category</label>
-                <input id="category" name="category" type="number" class="form-control">
-            </div>
-        </form>
-        `;
-    %>
-
-    <%- include('../templates/popupModal.ejs', {options: {
-        id: 'new-project-modal',
-        body: modalBody,
-        title: 'New Project',
-        formId: 'project-form'
-    }}) %>
-    <button class="mat-btn-white" class="btn btn-primary" data-toggle="modal" data-target="#new-project-modal">
-        <i class="fa fa-plus fa-2x"></i>
-    </button>
-
 </body>
 
 </html>
