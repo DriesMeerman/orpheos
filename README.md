@@ -1,6 +1,7 @@
 # Orpheos
 
 Project management tool.
+To see how it looks and works see /showcase.md
 
 ## How to use
 
